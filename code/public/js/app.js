@@ -76,6 +76,7 @@ $(document).ready(function() {
     user["longitude"] = pos["lng"];
     alert(JSON.stringify(user));
     socket.emit('newUser',user);
+    $("#btnStopJob").show("slow");
   });
 
   $("#btnMoveNo").click(function(event) {
@@ -85,6 +86,7 @@ $(document).ready(function() {
     user["latitude"] = pos["lat"];
     user["longitude"] = pos["lng"];
     socket.emit('newUser',user);
+    $("#btnStopJob").show("slow");
   });
 
   $("#btnTravelYes").click(function(event) {
@@ -106,6 +108,7 @@ $(document).ready(function() {
     $(".waitMessage").hide("slow");
     $(".toMap").hide("slow");
     $(".stopJob").show("slow");
+    socket.emit('jobDone',myid);
   });
 
 
@@ -120,10 +123,10 @@ $(document).ready(function() {
       }
     user["latitude"] = pos["lat"];
     user["longitude"] = pos["lng"];
-    alert(JSON.stringify(user));
     $(".offer").hide("slow");
     $(".waitMessage").show("slow");
     socket.emit('newUser',user);
+    $("#btnStopJob").show("slow");
     });
 
 
