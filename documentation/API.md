@@ -77,4 +77,41 @@ danger is an int form 0 to 10 which represents the danger
 userID is the identification of the user
 
 
+#solver
+state:
+```
+{
+  "healers" :
+    { "userID" :
+        {
+          "latitude": 45.02,
+          "longitude" : 23.43        
+        }
+    },
 
+    "injured" :
+      {
+        "userID" :
+        {
+          "motionless" : false,
+          "latitude": 45.02,
+          "longitude" : 23.43
+        }      
+      }
+}
+```
+
+solve(state)
+```
+{
+  "userID" :
+      {
+        "action": "go",
+        "place" :           
+          {
+            "latitude": 45.02,
+            "longitude" : 23.43
+          }            
+        }
+}
+```
