@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(http);
+var planner = require('./planner');
 
 
 //making files in public served at /
@@ -89,7 +90,7 @@ function mainloop() {
   if(injured.length>0){
     var state ={medicalAid, injured};
     //Call calculate routes function
-    var routes = solve(state);
+    var routes = planner.solve(state);
     //Send routes to clients
     for(var socketId in routes){
       var socket = people[socketId];
