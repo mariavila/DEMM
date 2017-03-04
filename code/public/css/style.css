@@ -34,6 +34,10 @@ a:hover {
   margin-bottom: 15px;
   border: 2px solid #fff;
 }
+
+.checkbox {
+  font-size: 120%;
+}
 /*
  * Base structure
  */
