@@ -1,10 +1,10 @@
-const MAX_DEPTH = 1;
-const MAX_WIDTH = 1;
+const MAX_DEPTH = 3;
+const MAX_WIDTH = 3;
 
 
 var locations = [];
 
-function distance(loc1,loc2)
+function distancef(loc1,loc2)
 {
   return calcCrow(loc1.longitude, loc1.latitude, loc2.longitude, loc2.latitude);
 }
@@ -13,7 +13,7 @@ function getNearest( n, location, locations)
 {
   var ni = Math.min(n+1, locations.length);
   locations.sort(function (x, y) {
-    return distance(x, location) - distance(y, location);
+    return distancef(x, location) - distancef(y, location);
   });
   return locations.slice(1,ni);
 }
@@ -22,16 +22,16 @@ function getNearest( n, location, locations)
 function heuristic(state)
 {
   var acc = 0;
-  for( injuredkey in state['injured'] ){
+  for(var injuredkey in state['injured'] ){
     var injured = state['injured'][injuredkey]
-    var distance = -1;
-    for( healerkey in state['healers'] )
+    var distanc = -1;
+    for(var healerkey in state['healers'] )
     {
       var healer = state['healers'][healerkey];
-      if (distance == -1) distance = distance(injured,healer);
-      if (distance > distance(injured,healer) ) distance = distance(injured,healer);
+      if (distanc == -1) distanc = distancef(injured,healer);
+      if (distanc > distancef(injured,healer) ) distanc = distancef(injured,healer);
     }
-    acc += distance;
+    acc += distanc;
   }
 }
 
@@ -39,13 +39,13 @@ function heuristic(state)
 // cost O( MAX_DEPTH^(MAX_WIDTH^npersones) ) ... suposu
 var solve = function solve(state)
 {
-  for( injuredkey in state['injured'] ) locations.push(copy(state['injured'][injuredkey]));
-  for( healerkey in state['healers'] ) locations.push(copy(state['healers'][healerkey]));
+  for(var injuredkey in state['injured'] ) locations.push(copy(state['injured'][injuredkey]));
+  for(var healerkey in state['healers'] ) locations.push(copy(state['healers'][healerkey]));
   var results = [];
   recursiveSolve(state,MAX_DEPTH,[state], results);
   var bestscore = -1;
   var beststate;
-  for (pathkey in results)
+  for (var pathkey in results)
   {
     var path = results[pathkey];
     var firststate = path[0];
@@ -59,7 +59,18 @@ var solve = function solve(state)
        beststate = firststate;
     }
   }
-  return beststate;
+  var apireturn = {};
+  for (var healerkey in beststate['healers']){
+    apireturn[healerkey] = {};
+    apireturn[healerkey]['next'] = beststate['healers'][healerkey].next;
+  }
+  for (var injuredkey in beststate['injured'])
+  {
+    apireturn[injuredkey] = {};
+    apireturn[injuredkey]['next'] = beststate['injured'][injuredkey].next;
+
+  }
+  return apireturn;
 }
 
 //cada estat te npersones i aquestes MAX_WIDTH possibles accions --> MAX_WIDTH^npersones possibles seguentes estats
@@ -70,7 +81,7 @@ function recursiveSolve(state, depth, previous, results) {
     return 0;
   }
 
-  for (injuredkey in state['injured'] )
+  for (var injuredkey in state['injured'] )
   {
     injured = state['injured'][injuredkey];
     if (! injured['motionless'])
@@ -79,7 +90,7 @@ function recursiveSolve(state, depth, previous, results) {
       delete injured['next']
     }
   }
-  for (healerkey in state['healers'] )
+  for (var healerkey in state['healers'] )
   {
       healer = state['healers'][healerkey];
       healer['possibles'] = getNearest(MAX_WIDTH, healer, locations)
@@ -88,29 +99,32 @@ function recursiveSolve(state, depth, previous, results) {
 
   var resultSuc = [];
   generateSuccessors(state,resultSuc);
-  for (nstate in resultSuc)
+  for (var nstate in resultSuc)
   {
-    recursiveSolve(copy(resultSuc[nstate]),depth-1, copy(previous.push(copy(resultSuc[nstate]))), results )
+    var step = copy(resultSuc[nstate]);
+    var nextPrevious = copy(previous);
+    nextPrevious[nextPrevious.length] = step;
+    recursiveSolve(copy(resultSuc[nstate]),depth-1, nextPrevious , results )
   }
 }
 
 function generateSuccessors(state,resultSuc)
 {
-  for (injured in state['injured'] )
+  for (var injured in state['injured'] )
   {
-    if (state['injured'][injured].next == undefined) {
-      for (next in state['injured'][injured]['possibles']){
+    if (state['injured'][injured].next == undefined && state['injured'][injured].possibles != undefined ) {
+      for (var next in state['injured'][injured]['possibles']){
         state['injured'][injured].next = state['injured'][injured]['possibles'][next];
         generateSuccessors(state,resultSuc);
       }
       return 0;
     }
   }
-  for (healer in state['healer'] )
+  for (var healer in state['healers'] )
   {
-    if (state['healer'][healer].next == undefined) {
-      for (next in state['healer'][healer].possibles){
-        state['healer'][healer].next = state['healer'][healer]['possibles'][next];
+    if (state['healers'][healer].next == undefined) {
+      for (var next in state['healers'][healer].possibles){
+        state['healers'][healer].next = state['healers'][healer]['possibles'][next];
         generateSuccessors(state,resultSuc);
       }
       return 0;
@@ -156,21 +170,34 @@ function toRad(Value)
 var sample =
 {
   "healers" :
-    { "userID" :
+    { "h1" :
         {
           "latitude": 11,
           "longitude" : 12
         }
+
     },
     "injured" :
       {
-        "userID" :
+        "i1" :
         {
           "motionless" : false,
           "latitude": 13,
+          "longitude" : 14
+        },       
+         "i2" :
+        {
+          "motionless" : false,
+          "latitude": 13,
+          "longitude" : 15
+        },
+        "i3" :
+        {
+          "motionless" : true,
+          "latitude": 14,
           "longitude" : 14
         }
       }
 };
 
-console.log(solve(sample));
+//console.log(solve(sample));
