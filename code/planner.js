@@ -1,62 +1,101 @@
-var strips = require('strips');
+const MAX_DEPTH = 1;
+const MAX_WIDTH = 1;
 
-strips.verbose = true;
+var locations = [];
+var map = {};
 
-//Heuristic
-//h, p or i
-function rol(s) {
-  return s[0];
+function distance(loc1,loc2)
+{
+  return calcCrow(loc1.longitude, loc1.latitude, loc2.longitude, loc2.latitude);
 }
 
-//{"operation":"","action":"INHEALER","parameters":["h1","p1"]},{"operation":"and","action":"ININJURED","parameters":["i1","p2"]}
-function whatAction(action) {
-  if (rol(action['parameters'][0]) == 'h')
-  {
-    if (rol(action['parameters'][1]) == 'p')
+var getNearest(n, location, locations)
+{
+  locations.sort(function (x, y) {
+    return distance(x, location) - distance(y, location);
+  })
+  return location[1:n];
+}
+
+
+function heuristic(state)
+{
+  var acc = 0;
+  for( injured in state['injured'] ){
+    var distance = -1;
+    for( healer in state['healers'] )
     {
-      return "walkhealer";
-    } else {
-      return "heal";
+      if (distance == -1) distance = distance(injured,healer);
+      if (distance > distance(injured,healer) ) distance = distance(injured,healer);
     }
-  } else if (rol(action['parameters'][0]) == 'i')
-  {
-    return "walkinjured"
-  }  else {
-    return "action not dectected";
+    acc += distance;
   }
 }
-//f(n) = g(n) + h(n)
-//h(n) is a heuristic that estimates the cost of the cheapest path from n to the goal.
 
-var cost = function cost(state) {
-  var ret = 5;
-  for (var i in state.actions) {
-      var action = whatAction(state.actions[i]);
-     //console.log(i);
-      //console.log(action);
-      if (action == 'walkinjured') {
-      } else if (action == 'walkhealer') {
-      } else if (action == 'heal') {
-          ret -= 1;
+function solve(state)
+{
+  for( injured in state['injured'] ) location.push(injured);
+  for( healer in state['healers'] ) location.push(injured);
+  recursiveSolve(state,MAX_DEPTH,[state])
+
+}
+
+function recursiveSolve(state, depth, previous) {
+
+  for (injured in state['injured'] ){
+    if (not injured.motionless) {
+      for (location in getNearest(MAX_WIDTH, injured, locations)){
+
       }
+    }
   }
-  return ret;
+
 }
 
-// Load the domain and problem. 
-strips.load('./strips_files/domain1.pddl', './strips_files/problem1.pddl', function(domain, problem) {
-    // Run the problem against the domain. 
-    var solutions = strips.solve(domain, problem,false,1,cost);
 
-    console.log('finished solving');
- 
-    // Display each solution. 
-    for (var i in solutions) {
-        var solution = solutions[i];
- 
-        console.log('- Solution found in ' + solution.steps + ' steps!');
-        for (var i = 0; i < solution.path.length; i++) {
-            console.log((i + 1) + '. ' + solution.path[i]);
-        }        
-    }
-});
+
+
+
+
+
+//This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
+
+function calcCrow(lat1, lon1, lat2, lon2)
+
+{
+
+  var R = 6371; // km
+
+  var dLat = toRad(lat2-lat1);
+
+  var dLon = toRad(lon2-lon1);
+
+  var lat1 = toRad(lat1);
+
+  var lat2 = toRad(lat2);
+
+
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+
+    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  var d = R * c;
+
+  return d;
+
+}
+
+
+
+// Converts numeric degrees to radians
+
+function toRad(Value)
+
+{
+
+    return Value * Math.PI / 180;
+
+}
