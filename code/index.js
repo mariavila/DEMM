@@ -37,50 +37,45 @@ app.get('/', function(req, res){
 
 
 //IO
-var transport=[];
-var medicalAid = [];
-var injured = []; //all injured
-var motionless= [];
+//var transport=[];
+var medicalAid = {};
+//medicalAid['userID']= {latitude: 124435, longitude: 43252678}
+var injured = {}; //all injured
+//injured['userID']= {motionless: 1, latitude: 124435, longitude: 43252678}
 var people = []; //userId of all users
-var info = {};
-//info['userID']= {danger: 2, latitude: 124435, longitude: 43252678}
-
-
 
 //Client server
 io.on('connection', function(socket){
-  if(!(socket.id in players)){
+  if(!(socket.id in people)){
     people.push(socket.id);
   }
 	socket.on('newUser', function(msg){
-    info[socket.id] = {danger : msg.danger, latitude : msg.latitude, longitude : msg.longitude};
     if (msg.services[0] == 1){
-      medicalAid.push(socket.id);
+      medicalAid[socket.id] = {latitude : msg.latitude, longitude : msg.longitude};
     }
-    if(msg.services[1] == 1){
+    /*if(msg.services[1] == 1){
       transport.push(socket.id);
-    }
-    if(msg.danger > 0){
-      injured.push(socket.id);
-      if(msg.movement==1){
-        motionless.push(socket.id);
-      }
+    }*/
+    if(msg.danger == 1){
+      injured[socket.id] = {motionless : msg.movement, latitude : msg.latitude, longitude : msg.longitude};
     }
     io.emit('userID',socket.id);
 	});
+
   socket.on('updateUserState', function(msg){
-    info[msg.userID]={danger : msg.danger, latitude : msg.latitude, longitude : msg.longitude};
+    if(msg.danger == 1){
+      if(userID in medicalAid) delete medicalAid[userID];
+      injured[userID] =  {motionless : msg.movement, latitude : msg.latitude, longitude : msg.longitude};
+    }
+    else if(userID in medicalAid){
+      medicalAid[userID] = {latitude : msg.latitude, longitude : msg.longitude};
+    }
   });
   socket.on('jobDone', function(){
 	//var index = players.indexOf(socket.id);
   });
   socket.on('notAvailable', function(msg){
-    if(msg.userID in info) delete info[msg.userID];
-    if(people.includes(msg.userID)) removeItem(msg.userID, people);
-    if(transport.includes(msg.userID)) removeItem(msg.userID, transport);
-    if(medicalAid.includes(msg.userID)) removeItem(msg.userID, medicalAid);
-    if(injured.includes(msg.userID)) removeItem(msg.userID, injured);
-    if(motionless.includes(msg.userID)) removeItem(msg.userID, motionless);
+    if(msg.userID in medicalAid) delete medicalAid[msg.userID];
   });
 });
 
@@ -88,13 +83,6 @@ io.on('connection', function(socket){
 
 function mainloop() {
   if(injured.length>0){
-    var positions=[]
-    var convPositions = {};
-    var personPos = {};
-    var transportPos=[];
-    var medicalAidPos = [];
-    var injuredPos = []; //all injured
-    var motionlessPos = [];
 
     //Calculate position arrays
     for(var i=0; i<people.length; ++i){
