@@ -1,40 +1,63 @@
-$(function () {
+var user = {};
 
-  function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 13
-        });
-        var marker = new google.maps.Marker({
-          position: {lat: -34.397, lng: 150.644},
-          map: map
-        });
+var myid;
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
+var mapsurl;
 
-            map.setCenter(pos);
-            marker.setPosition(pos)
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
+//init
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
 
-    google.maps.event.addDomListener(window, 'load', initMap);
+$(document).ready(function() {
+
+  user = {"danger":0,"movement":0,"lat":52.48,"lng":48.5,"services":[0,0]};
+
+  var socket = io();
+
+  $("#btnOkYes").click(function(event) {
+    $(".ok").hide("slow");
+    $(".travel").show("slow");
+    alert(JSON.stringify(user));
+  });
+
+  $("#btnOkNo").click(function(event) {
+    $(".ok").hide("slow");
+    $(".move").show("slow");
+    user["danger"] = 1;
+  });
+
+  $("#btnMoveYes").click(function(event) {
+    $(".move").hide("slow");
+    $(".waitMessage").show("slow");
+    socket.emit('newUser',user);
+  });
+
+  $("#btnMoveNo").click(function(event) {
+    $(".move").hide("slow");
+    $(".message1").show("slow");
+    user["movement"] = 1;
+  });
+
+  $("#btnTravelYes").click(function(event) {
+    $(".travel").hide("slow");
+    $(".offer").show("slow");
+  });
+
+  $("#btnTravelNo").click(function(event) {
+    $(".travel").hide("slow");
+    $(".message2").show("slow");
+  });
+
+  socket.on('sendPerson', function(msg){
+      var latitudetogo = msg.latitude;
+      var longitudetogo = msg.longitude;
+      mapsurl = "http://maps.google.com/?q=" + latitudetogo + "," + longitudtogo
+      $(".waitMessage").hide("slow");
+      $(".toMap").show("slow");
+      document.getElementById("btnToMap").setAttribute("href",mapsurl);
+  });
+
+  socket.on('sendID',function(id){
+       myid = id;
+  });
+
 });

@@ -33,7 +33,7 @@
             <div class="inner">
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
+                  <li class="active"><a href="index.html">Home</a></li>
                   <li><a href="map.html">DEMM Map</a></li>
                   <li><a href="#">How does DEMM work?</a></li>
                 </ul>
@@ -41,14 +41,80 @@
             </div>
 
             <div class="inner cover">
-              <h1 class="cover-heading">Are you OK?</h1>
-              <p class="lead">
-                <a href="travel.html" class="btn btn-lg btn-default btn-green">YES</a>
-              </p>
-              <p class="lead">
-                <a href="move.html" class="btn btn-lg btn-default btn-red">NO</a>
-              </p>
+
+              <div class="ok">
+                <h1 class="cover-heading">Are you OK?</h1>
+                <p class="lead">
+                  <button id="btnOkYes" type="submit" name="button" class="btn btn-lg btn-default btn-green">YES</button>
+                </p>
+                <p class="lead">
+                  <button id="btnOkNo" type="submit" name="button" class="btn btn-lg btn-default btn-red">NO</button>
+                </p>
+              </div>
+
+              <div class="move">
+                <div class="inner cover">
+                  <h1 class="cover-heading">Can you move?</h1>
+                  <p class="lead">
+                    <button id="btnMoveYes" type="submit" name="button" class="btn btn-lg btn-default btn-green">YES</button>
+                  </p>
+                  <p class="lead">
+                    <button id="btnMoveNo" type="submit" name="button" class="btn btn-lg btn-default btn-red">NO</button>
+                  </p>
+                </div>
+              </div>
+
+              <div class="travel">
+                <div class="inner cover">
+                  <h1 class="cover-heading">Can you travel?</h1>
+                  <p class="lead">
+                    <button id="btnTravelYes" type="submit" name="button" class="btn btn-lg btn-default btn-green">YES</button>
+                  </p>
+                  <p class="lead">
+                    <button id="btnTravelNo" type="submit" name="button" class="btn btn-lg btn-default btn-red">NO</button>
+                  </p>
+                </div>
+              </div>
+
+              <div class="offer">
+                <div class="inner cover">
+                  <h1 class="cover-heading">Which of this options can you offer?</h1>
+                </div>
+              </div>
+
+              <div class="waitMessage">
+                <div class="inner cover">
+                  <h1 class="cover-heading">We're processing the information and you will soon receive some news.</h1>
+                </div>
+              </div>
+
+              <div class="map" id="map"></div>
+
+
+              <div class="message1">
+                <div class="inner cover">
+                  <h1 class="cover-heading">Message1</h1>
+                </div>
+              </div>
+
+              <div class="message2">
+                <div class="inner cover">
+                  <h1 class="cover-heading">Message2</h1>
+                </div>
+              </div>
+
+              <div class="toMap">
+                <div class="inner cover">
+                  <h1 class="cover-heading">To Map</h1>
+                  <p class="lead">
+                    <a id="btnToMap" class="btn btn-lg btn-default btn-green">Go</a>
+                  </p>
+                </div>
+              </div>
+
+
             </div>
+
           </div>
 
           <div class="mastfoot">
@@ -68,20 +134,25 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <!-- Js -->
-	<script src="/js/socket.io-1.2.0.js"></script>
-	<script>
-	//init
-		var socket = io();
-		
-	//emits
-		var user = {danger : 0, movement: }
-		socket.emit('newUser', user);
-		
-		socket.on('sendPerson', function(msg){
-				var latitudetogo = msg.latitude;
-				var longitudetogo = msg.longitude;
-			});
-	</script>
+    <script src="js/app.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="js/map.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnycWatbGyK6ldFqErjFtko1yeMclNUOA&amp;sensor=true"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+    <script>
+  	//init
+  	//	var socket = io();
+
+  	//emits
+  		//var user = {};
+
+  		/*socket.emit('newUser', user);
+
+  		socket.on('sendPerson', function(msg){
+  				var latitudetogo = msg.latitude;
+  				var longitudetogo = msg.longitude;
+  			});*/
+  	</script>
 	</body>
 </html>
