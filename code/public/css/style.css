@@ -47,7 +47,12 @@ a:hover {
 .map,
 .message,
 .waitMessage,
-.toMap{
+.toMap,
+.stopJob{
+  display:none;
+}
+
+#btnStopJob{
   display:none;
 }
 /*
