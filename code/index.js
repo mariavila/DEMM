@@ -37,17 +37,17 @@ app.get('/', function(req, res){
 
 
 //IO
-//var transport=[];
+//var transport={};
 var medicalAid = {};
 //medicalAid['userID']= {latitude: 124435, longitude: 43252678}
 var injured = {}; //all injured
 //injured['userID']= {motionless: 1, latitude: 124435, longitude: 43252678}
-var people = []; //userId of all users
+var people = {}; //userId of all users
 
 //Client server
 io.on('connection', function(socket){
   if(!(socket.id in people)){
-    people.push(socket.id);
+    people[socket.id] = socket;
   }
 	socket.on('newUser', function(msg){
     if (msg.services[0] == 1){
@@ -59,7 +59,7 @@ io.on('connection', function(socket){
     if(msg.danger == 1){
       injured[socket.id] = {motionless : msg.movement, latitude : msg.latitude, longitude : msg.longitude};
     }
-    io.emit('userID',socket.id);
+    io.emit('sendID',socket.id);
 	});
 
   socket.on('updateUserState', function(msg){
@@ -77,46 +77,26 @@ io.on('connection', function(socket){
   socket.on('notAvailable', function(msg){
     if(msg.userID in medicalAid) delete medicalAid[msg.userID];
   });
+
+  socket.on('disconnect', function(){
+    delete people[socket.id];
+  });
 });
 
 
 
 function mainloop() {
   if(injured.length>0){
-
-    //Calculate position arrays
-    for(var i=0; i<people.length; ++i){
-      positions.push(i);
-      convPositions[people[i]]={latitude: info[people[i]].latitude, longitude : info[people[i]].longitude, posID : i};
-      personPos[people[i]] = {posID : i};
-    }
-
-    for(var i=0; i<transport.length; ++i){
-      transportPos[i] = convPositions[transport[i]].posID;
-    }
-
-    for(var i=0; i<medicalAidPos.length; ++i){
-      medicalAidPos[i] = convPositions[medicalAid[i]].posID;
-    }
-
-    for(var i=0; i<injuredPos.length; ++i){
-      injuredPos[i] = convPositions[injured[i]].posID;
-    }
-
-    for(var i=0; i<motionlessPos.length; ++i){
-      motionlessPos[i] = convPositions[motionless[i]].posID;
-    }
-
-
-
+    var state ={medicalAid, injured};
     //Call calculate routes function
-
+    var routes = solve(state);
     //Send routes to clients
-
+    for(var socketId in routes){
+      var socket = people[socketId];
+      socket.emit('sendPerson',routes[socketId].next);
+    }
 
   }
-
-
 }
 
 setInterval(mainloop,10000);
