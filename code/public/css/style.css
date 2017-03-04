@@ -35,8 +35,16 @@ a:hover {
   border: 2px solid #fff;
 }
 
-.checkbox {
-  font-size: 120%;
+/*Button containers*/
+
+.move,
+.travel,
+.offer,
+.map,
+.message,
+.waitMessage,
+.toMap{
+  display:none;
 }
 /*
  * Base structure

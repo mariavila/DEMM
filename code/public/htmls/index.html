@@ -33,20 +33,29 @@
             <div class="inner">
               <nav>
                 <ul class="nav masthead-nav">
-                  <li><a href="index.html">Home</a></li>
-                  <li class="active"><a href="#">DEMM Map</a></li>
-                  <li><a href="howTo.html">How does DEMM work?</a></li>
+                  <li class="active"><a href="#">Home</a></li>
+                  <li><a href="map.html">DEMM Map</a></li>
+                  <li><a href="#">How does DEMM work?</a></li>
                 </ul>
               </nav>
             </div>
-            <div id="map"></div>
+
+            <div class="inner cover">
+              <h1 class="cover-heading">Are you OK?</h1>
+              <p class="lead">
+                <a href="travel.html" class="btn btn-lg btn-default btn-green">YES</a>
+              </p>
+              <p class="lead">
+                <a href="move.html" class="btn btn-lg btn-default btn-red">NO</a>
+              </p>
+            </div>
           </div>
 
           <div class="mastfoot">
             <div class="inner">
               <p>HackUPC DEMM team</p>
             </div>
-          </di
+          </div>
 
         </div>
 
@@ -59,7 +68,20 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="js/app.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnycWatbGyK6ldFqErjFtko1yeMclNUOA&amp;sensor=true"></script>
-    </body>
+    <!-- Js -->
+	<script src="/js/socket.io-1.2.0.js"></script>
+	<script>
+	//init
+		var socket = io();
+		
+	//emits
+		var user = {danger : 0, movement: }
+		socket.emit('newUser', user);
+		
+		socket.on('sendPerson', function(msg){
+				var latitudetogo = msg.latitude;
+				var longitudetogo = msg.longitude;
+			});
+	</script>
+	</body>
 </html>
