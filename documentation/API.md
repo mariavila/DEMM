@@ -2,17 +2,16 @@
 
 ## Client to server
 
-### newUser(status, movement, latitude,longitude,[services])
-status is an int from 0 to 10 which represents the danger
+### newUser(danger, movement, latitude,longitude,[services])
+
+danger is an int from 0 to 10 which represents the danger
 
 movement is an int 0 if the person can move 1 if he can't
 
-services is a vector that can be empty wich represents what action can this person offer ("aid", "transport")
+services is a vector with two ints, the first one indicates if the person can offer medical aid, the second one if the person can offer transport (1 if true)
 
 ```
 {
-  "status" : 0,
-  "userID" : 1234567890
 }
 ```
 
@@ -20,7 +19,6 @@ services is a vector that can be empty wich represents what action can this pers
 userID is an int representing the user
 ```
 {
-  "status" : 0
 }
 ```
 
@@ -29,14 +27,13 @@ userID is an int representing the user
 decision is an int, 0 representing that the person was unable to complete the job 1 if he has completed it
 ```
 {
- "status" : 0
 }
 
 ### notAvailable(userID)
 userID is an int representing the user
 {
- "status" : 0
 }
+
 
 ## Server to client
 
@@ -45,7 +42,6 @@ userID is an int representing the user
 latitude and longitude is where the person has to go
 ```
 {
-  "status" : 0
 }
 ```
 
@@ -57,7 +53,6 @@ latitudeFi and longitudeFi is the final destination
 
 ```
 {
-  "status" : 0
 }
 ```
 
@@ -67,7 +62,19 @@ danger is an int form 0 to 10 which represents the danger
 
 ```
 {
-  "status" : 0
 }
 ```
+
+### status()
+
+```
+{
+}
+```
+
+### sendID("userID")
+
+userID is the identification of the user
+
+
 
