@@ -97,6 +97,17 @@ $(document).ready(function() {
     $(".message").show("slow");
   });
 
+  $("#btnStopJob").click(function(event) {
+    $(".ok").hide("slow");
+    $(".travel").hide("slow");
+    $(".move").hide("slow");
+    $(".offer").hide("slow");
+    $(".message").hide("slow");
+    $(".waitMessage").hide("slow");
+    $(".toMap").hide("slow");
+    $(".stopJob").show("slow");
+  });
+
 
 //Create offer
 
@@ -110,6 +121,8 @@ $(document).ready(function() {
     user["latitude"] = pos["lat"];
     user["longitude"] = pos["lng"];
     alert(JSON.stringify(user));
+    $(".offer").hide("slow");
+    $(".waitMessage").show("slow");
     socket.emit('newUser',user);
     });
 
@@ -126,6 +139,7 @@ $(document).ready(function() {
 
   socket.on('sendID',function(id){
        myid = id;
+       alert(myid);
   });
 
 });
