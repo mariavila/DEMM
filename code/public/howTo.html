@@ -34,19 +34,27 @@
               <nav>
                 <ul class="nav masthead-nav">
                   <li><a href="index.html">Home</a></li>
-                  <li class="active"><a href="#">DEMM Map</a></li>
-                  <li><a href="howTo.html">How does DEMM work?</a></li>
+                  <li><a href="map.html">DEMM Map</a></li>
+                  <li class="active"><a href="#">How does DEMM work?</a></li>
                 </ul>
               </nav>
             </div>
-            <div id="map"></div>
+
+            <div class="inner cover">
+
+              <div class="ok">
+                <h1 class="cover-heading">How to?</h1>
+              </div>
+
+            </div>
+
           </div>
 
           <div class="mastfoot">
             <div class="inner">
               <p>HackUPC DEMM team</p>
             </div>
-          </di
+          </div>
 
         </div>
 
@@ -60,6 +68,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="js/map.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnycWatbGyK6ldFqErjFtko1yeMclNUOA&amp;sensor=true"></script>
-    </body>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+    <script>
+  	//init
+  	//	var socket = io();
+
+  	//emits
+  		//var user = {};
+
+  		/*socket.emit('newUser', user);
+
+  		socket.on('sendPerson', function(msg){
+  				var latitudetogo = msg.latitude;
+  				var longitudetogo = msg.longitude;
+  			});*/
+  	</script>
+	</body>
 </html>

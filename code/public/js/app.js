@@ -1,22 +1,66 @@
 var user = {};
-
 var myid;
-
 var mapsurl;
+var pos = {};
 
 //init
 
-
 $(document).ready(function() {
 
-  user = {"danger":0,"movement":0,"lat":52.48,"lng":48.5,"services":[0,0]};
+
+//Init map
+  function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 13
+        });
+        var marker = new google.maps.Marker({
+          position: {lat: -34.397, lng: 150.644},
+          map: map
+        });
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            map.setCenter(pos);
+            marker.setPosition(pos)
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+      }
+
+    google.maps.event.addDomListener(window, 'load', initMap);
+
+
+//Hide and show divs
+  user = {"danger":0,"movement":0,"latitude":0,"longitude":0,"services":[0,0]};
 
   var socket = io();
+
+  initMap();
+
+  user["latitude"] = pos["lat"];
+  user["longitude"] = pos["lng"];
 
   $("#btnOkYes").click(function(event) {
     $(".ok").hide("slow");
     $(".travel").show("slow");
-    alert(JSON.stringify(user));
   });
 
   $("#btnOkNo").click(function(event) {
@@ -28,13 +72,19 @@ $(document).ready(function() {
   $("#btnMoveYes").click(function(event) {
     $(".move").hide("slow");
     $(".waitMessage").show("slow");
+    user["latitude"] = pos["lat"];
+    user["longitude"] = pos["lng"];
+    alert(JSON.stringify(user));
     socket.emit('newUser',user);
   });
 
   $("#btnMoveNo").click(function(event) {
     $(".move").hide("slow");
-    $(".message1").show("slow");
+    $(".waitMessage").show("slow");
     user["movement"] = 1;
+    user["latitude"] = pos["lat"];
+    user["longitude"] = pos["lng"];
+    socket.emit('newUser',user);
   });
 
   $("#btnTravelYes").click(function(event) {
@@ -44,9 +94,27 @@ $(document).ready(function() {
 
   $("#btnTravelNo").click(function(event) {
     $(".travel").hide("slow");
-    $(".message2").show("slow");
+    $(".message").show("slow");
   });
 
+
+//Create offer
+
+  $("#btnOffer").click(function(event) {
+    if (document.getElementById('medicalAid').checked) {
+        user["services"][0] = 1;
+      }
+    if (document.getElementById('transport').checked) {
+        user["services"][1] = 1;
+      }
+    user["latitude"] = pos["lat"];
+    user["longitude"] = pos["lng"];
+    alert(JSON.stringify(user));
+    socket.emit('newUser',user);
+    });
+
+
+//Sockets
   socket.on('sendPerson', function(msg){
       var latitudetogo = msg.latitude;
       var longitudetogo = msg.longitude;

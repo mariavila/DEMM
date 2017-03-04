@@ -37,16 +37,11 @@ a:hover {
 
 /*Button containers*/
 
-.ok{
-
-}
-
 .move,
 .travel,
 .offer,
 .map,
-.message1,
-.message2,
+.message,
 .waitMessage,
 .toMap{
   display:none;
