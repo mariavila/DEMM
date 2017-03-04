@@ -89,6 +89,7 @@ function mainloop() {
   if(injured.length>0){
     var positions=[]
     var convPositions = {};
+    var personPos = {};
     var transportPos=[];
     var medicalAidPos = [];
     var injuredPos = []; //all injured
@@ -98,6 +99,7 @@ function mainloop() {
     for(var i=0; i<people.length; ++i){
       positions.push(i);
       convPositions[people[i]]={latitude: info[people[i]].latitude, longitude : info[people[i]].longitude, posID : i};
+      personPos[people[i]] = {posID : i};
     }
 
     for(var i=0; i<transport.length; ++i){
@@ -116,11 +118,13 @@ function mainloop() {
       motionlessPos[i] = convPositions[motionless[i]].posID;
     }
 
+
+
     //Call calculate routes function
 
     //Send routes to clients
 
-    io.emit()
+
   }
 
 
