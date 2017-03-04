@@ -106,8 +106,7 @@ solve(state)
 {
   "userID" :
       {
-        "action": "go",
-        "place" :           
+        "next":           
           {
             "latitude": 45.02,
             "longitude" : 23.43
