@@ -81,10 +81,11 @@
                   <h1 class="cover-heading">Which of this options can you offer?</h1>
                 </div>
                 <div class="inner cover">
-                    <input id="medicalAid"type="checkbox" name="offer" value="medicalAid">Basic medical aid<br>
-                    <input id="transport" type="checkbox" name="offer" value="transport">Transport<br>
+                  <div class="checkbox">
+                    <input id="medicalAid" class="" type="checkbox" name="offer" value="medicalAid">Basic medical aid<br>
+                    <input id="transport" class="" type="checkbox" name="offer" value="transport">Transport<br>
                     <input id="btnOffer" type="submit" class="btn btn-lg btn-default btn-green" value="Submit">
-
+                  </div>
                 </div>
               </div>
 
@@ -113,6 +114,12 @@
                 </div>
               </div>
 
+              <div class="stopJob">
+                <div class="inner cover">
+                  <h1 class="cover-heading">You've succesfully exited the DEMM system. Thank you for your help!</h1>
+                </div>
+              </div>
+
 
             </div>
 
@@ -120,6 +127,9 @@
 
           <div class="mastfoot">
             <div class="inner">
+              <p class="lead">
+                <button id="btnStopJob" type="submit" name="button" class="btn btn-lg btn-default btn-red">Exit DEMM system</button>
+              </p>
               <p>HackUPC DEMM team</p>
             </div>
           </div>

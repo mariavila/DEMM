@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
+var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var planner = require('./planner');
 
@@ -44,6 +44,7 @@ var medicalAid = {};
 var injured = {}; //all injured
 //injured['userID']= {motionless: 1, latitude: 124435, longitude: 43252678}
 var people = {}; //userId of all users
+var injuredCOUNT = 0;
 
 //Client server
 io.on('connection', function(socket){
@@ -59,13 +60,16 @@ io.on('connection', function(socket){
     }*/
     if(msg.danger == 1){
       injured[socket.id] = {motionless : msg.movement, latitude : msg.latitude, longitude : msg.longitude};
+      injuredCOUNT++;
     }
+    console.log(msg);
     io.emit('sendID',socket.id);
 	});
 
   socket.on('updateUserState', function(msg){
     if(msg.danger == 1){
       if(userID in medicalAid) delete medicalAid[userID];
+      if (!(userID in injured)) injuredCOUNT++;
       injured[userID] =  {motionless : msg.movement, latitude : msg.latitude, longitude : msg.longitude};
     }
     else if(userID in medicalAid){
@@ -87,16 +91,15 @@ io.on('connection', function(socket){
 
 
 function mainloop() {
-  if(injured.length>0){
+  if(injuredCOUNT>0){ 
     var state ={medicalAid, injured};
     //Call calculate routes function
     var routes = planner.solve(state);
     //Send routes to clients
     for(var socketId in routes){
       var socket = people[socketId];
-      socket.emit('sendPerson',routes[socketId].next);
+      socket.emit('sendPerson', routes[socketId].next);
     }
-
   }
 }
 
