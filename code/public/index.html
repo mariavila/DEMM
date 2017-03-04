@@ -72,5 +72,20 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    </body>
+    <!-- Js -->
+	<script src="/js/socket.io-1.2.0.js"></script>
+	<script>
+	//init
+		var socket = io();
+		
+	//emits
+		var user = {danger : 0, movement: }
+		socket.emit('newUser', user);
+		
+		socket.on('sendPerson', function(msg){
+				var latitudetogo = msg.latitude;
+				var longitudetogo = msg.longitude;
+			});
+	</script>
+	</body>
 </html>
