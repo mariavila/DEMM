@@ -39,8 +39,8 @@ function heuristic(state)
 // cost O( MAX_DEPTH^(MAX_WIDTH^npersones) ) ... suposu
 var solve = function solve(state)
 {
-  for( injured in state['injured'] ) locations.push(injured);
-  for( healer in state['healers'] ) locations.push(injured);
+  for( injuredkey in state['injured'] ) locations.push(copy(state['injured'][injuredkey]));
+  for( healerkey in state['healers'] ) locations.push(copy(state['healers'][healerkey]));
   var results = [];
   recursiveSolve(state,MAX_DEPTH,[state], results);
   var bestscore = -1;
@@ -50,7 +50,6 @@ var solve = function solve(state)
     var path = results[pathkey];
     var firststate = path[0];
     var laststate =  path[path.length-1];
-    console.log(JSON.stringify(path));
     if( bestscore == -1){
        bestscore = heuristic(laststate);
        beststate = firststate;
@@ -67,7 +66,7 @@ var solve = function solve(state)
 function recursiveSolve(state, depth, previous, results) {
   if (depth == 0)
   {
-    results.push(copy(state));
+    results.push(copy(previous));
     return 0;
   }
 
@@ -76,20 +75,22 @@ function recursiveSolve(state, depth, previous, results) {
     injured = state['injured'][injuredkey];
     if (! injured['motionless'])
     {
-      injured['possibles'] = getNearest(MAX_WIDTH, injured, locations)
+      injured['possibles'] = getNearest(MAX_WIDTH, injured, locations);
+      delete injured['next']
     }
   }
   for (healerkey in state['healers'] )
   {
       healer = state['healers'][healerkey];
       healer['possibles'] = getNearest(MAX_WIDTH, healer, locations)
+      delete healer['next']
   }
 
   var resultSuc = [];
   generateSuccessors(state,resultSuc);
   for (nstate in resultSuc)
   {
-    recursiveSolve(resultSuc[nstate],depth-1, previous.push(copy(resultSuc[nstate])), results )
+    recursiveSolve(copy(resultSuc[nstate]),depth-1, copy(previous.push(copy(resultSuc[nstate]))), results )
   }
 }
 
@@ -109,7 +110,7 @@ function generateSuccessors(state,resultSuc)
   {
     if (state['healer'][healer].next == undefined) {
       for (next in state['healer'][healer].possibles){
-        state['healer'][healer].next = next;
+        state['healer'][healer].next = state['healer'][healer]['possibles'][next];
         generateSuccessors(state,resultSuc);
       }
       return 0;
@@ -157,8 +158,8 @@ var sample =
   "healers" :
     { "userID" :
         {
-          "latitude": 45.02,
-          "longitude" : 23.43
+          "latitude": 11,
+          "longitude" : 12
         }
     },
     "injured" :
@@ -166,8 +167,8 @@ var sample =
         "userID" :
         {
           "motionless" : false,
-          "latitude": 45.02,
-          "longitude" : 23.43
+          "latitude": 13,
+          "longitude" : 14
         }
       }
 };
