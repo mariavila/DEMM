@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var server = require('http').Server(app);
+var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
@@ -93,9 +93,8 @@ function mainloop() {
     //Send routes to clients
     for(var socketId in routes){
       var socket = people[socketId];
-      socket.emit('sendPerson',routes[socketId].next);
+      socket.emit('sendPerson', routes[socketId].next);
     }
-
   }
 }
 
