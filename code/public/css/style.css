@@ -36,6 +36,12 @@ a:hover {
   font-size: 200%;
 }
 
+.btn-red-sm {
+  background-color: #FF0000;
+  border: 1px solid #CD1010;
+  font-size: 100%;
+}
+
 #map {
   width: 100%;
   height: 300px;
@@ -56,7 +62,8 @@ a:hover {
 .message,
 .waitMessage,
 .toMap,
-.stopJob{
+.stopJob,
+.message1{
   display:none;
 }
 
