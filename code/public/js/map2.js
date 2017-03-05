@@ -12,11 +12,11 @@ socket.on('sendAllPos',function(allPos){
 
 function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
+        center: {lat: 41.388935, lng: 2.113337},
         zoom: 12
       });
       var marker = new google.maps.Marker({
-        position: {lat: -34.397, lng: 150.644},
+        position: {lat: 41.388935, lng: 2.113337},
         map: map
       });
 

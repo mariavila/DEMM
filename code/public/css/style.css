@@ -24,6 +24,12 @@ a:hover {
   font-size: 200%;
 }
 
+.btn-green-sm {
+  background-color: #16C616;
+  border: 1px solid #069A06;
+  font-size: 100%;
+}
+
 .btn-red {
   background-color: #FF0000;
   border: 1px solid #CD1010;
@@ -77,6 +83,13 @@ h2{
 h1{
   color: rgba(255,255,0,1);
   padding-bottom: 20px;
+}
+p{
+  font-size: 130%;
+  color: #fff;
+}
+.footer{
+  font-size: 100%;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
