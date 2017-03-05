@@ -21,11 +21,13 @@ a:hover {
 .btn-green {
   background-color: #16C616;
   border: 1px solid #069A06;
+  font-size: 200%;
 }
 
 .btn-red {
   background-color: #FF0000;
   border: 1px solid #CD1010;
+  font-size: 200%;
 }
 
 #map {
@@ -62,11 +64,19 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #B6D1D1;
+  background-image: url("http://www.thewallpapers.org/photo/23492/2-blue-green-rainbow.jpg");
+  background-repeat: no-repeat;
 }
 body {
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+h2{
+  color: rgba(255,255,0,.75);
+}
+h1{
+  color: rgba(255,255,0,1);
+  padding-bottom: 20px;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -112,8 +122,8 @@ body {
   padding-left: 0;
   font-size: 16px;
   font-weight: bold;
-  color: #fff; /* IE8 proofing */
-  color: rgba(255,255,0,.75);
+  color: #a9a9a9; /* IE8 proofing */
+  color: #a9a9a9;
   border-bottom: 2px solid transparent;
 }
 .masthead-nav > li > a:hover,
