@@ -29,7 +29,6 @@ var injured = {}; //all injured
 var people = {}; //userId of all users
 
 
-
 var injuredCOUNT = 3; //CANVIAR A 0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //Client server
@@ -80,21 +79,32 @@ io.on('connection', function(socket){
     console.log([medicalAid, injured]);
   });
 
-  socket.on('askWheretogo', function(){
-    if(injuredCOUNT>0){
-      injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
-      injured["_12346"] = {motionless: 0, latitude: 41.386895, longitude:  2.162351};
-      injured["_12347"] = {motionless: 0, latitude: 41.393833,  longitude: 2.197119};
+  socket.on('disconnect', function(){
+    delete people[socket.id];
+    if(socket.id in injured){
+      delete medicalAid[socket.id];
+      injuredCOUNT--;
+    }
+  });
+});
 
-      medicalAid["_0987654"] = {latitude: 41.394605, longitude: 2.150028};
-      medicalAid["_0987653"] = {latitude: 41.405804,  longitude: 2.188877};
-      medicalAid["_0987652"] = {latitude: 41.410492,  longitude: 2.158905};
+
+
+function mainloop() {
+  if(injuredCOUNT>0){
+    injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
+    injured["_12346"] = {motionless: 0, latitude: 41.386895, longitude:  2.162351};
+    injured["_12347"] = {motionless: 0, latitude: 41.393833,  longitude: 2.197119};
+
+    medicalAid["_0987654"] = {latitude: 41.394605, longitude: 2.150028};
+    medicalAid["_0987653"] = {latitude: 41.405804,  longitude: 2.188877};
+    medicalAid["_0987652"] = {latitude: 41.410492,  longitude: 2.158905};
     
-      var state ={"healers" : medicalAid,"injured": injured};
+    var state ={"healers" : medicalAid,"injured": injured};
 
     //Call calculate routes function
     var routes = planner.solve(state);
-
+    //console.log(state);
     //Send routes to clients
     for(var socketId in routes){
       console.log(socketId);
@@ -107,8 +117,7 @@ io.on('connection', function(socket){
       }
     }
   }
-  })
-
+}
   socket.on('disconnect', function(){
     delete people[socket.id];
     delete medicalAid[socket.id];
