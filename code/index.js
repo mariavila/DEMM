@@ -11,7 +11,7 @@ app.use(express.static('public'))
 
 //Client to server
 http.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+  console.log('Example app listening on port 3000!');
 });
 
 //Serve html
@@ -27,7 +27,9 @@ var medicalAid = {};
 var injured = {}; //all injured
 //injured['userID']= {motionless: 1, latitude: 124435, longitude: 43252678}
 var people = {}; //userId of all users
-var injuredCOUNT = 0;
+
+
+var injuredCOUNT = 1; //CANVIAR A 0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 //Client server
 io.on('connection', function(socket){
@@ -69,9 +71,12 @@ io.on('connection', function(socket){
       delete medicalAid[socket.id];
       injuredCOUNT--;
     }
+    console.log(msg);
   });
   socket.on('requestAllPos', function(){
+    console.log("request all pos");
     io.emit([medicalAid, injured]);
+    console.log([medicalAid, injured]);
   });
 
   socket.on('disconnect', function(){
@@ -88,13 +93,22 @@ io.on('connection', function(socket){
 
 function mainloop() {
   if(injuredCOUNT>0){ 
-    var state ={medicalAid, injured};
+    injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
+    medicalAid["_0987654"] = {latitude: 41.3918234, longitude: 2.1155787};
+    var state ={"healers" : medicalAid,"injured": injured};
+
     //Call calculate routes function
     var routes = planner.solve(state);
+    //console.log(state);
     //Send routes to clients
     for(var socketId in routes){
-      var socket = people[socketId];
-      socket.emit('sendPerson', routes[socketId].next);
+      console.log(socketId);
+      if(routes[socketId].next != undefined && socketId[0]!='_'){
+        var socket = people[socketId];
+        socket.emit('sendPerson', routes[socketId].next);
+        console.log("envio al marc les coses que ha calculat l'esteve")
+        console.log(routes[socketId].next);
+      }
     }
   }
 }
