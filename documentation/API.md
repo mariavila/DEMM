@@ -62,7 +62,10 @@ danger is an int form 0 to 10 which represents the danger
 {
 }
 ```
-### sendAllPos([{userID, latitude, longitude}, ])
+### sendAllPos([medicalAid, injured])
+medicalAid is a dictionary where the key is the userID and the values are the latitude and the longitude
+
+injured is a dictionary where the key is the userID and the values are the latitude, the longitude and motionless
 
 ```
 {
