@@ -69,13 +69,11 @@ danger is an int form 0 to 10 which represents the danger
 }
 ```
 
-
-## Internal connection
-
 ### sendID("userID")
 
 userID is the identification of the user
 
+## Internal connection
 
 #solver
 state:
