@@ -112,7 +112,7 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     delete people[socket.id];
     delete medicalAid[socket.id];
-    // Falta fer aixooooo:  injuredCOUNT--;
+    //FALTA fer:  injuredCOUNT--;
     }
   });
 
