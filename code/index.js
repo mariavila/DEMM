@@ -5,35 +5,18 @@ var io = require('socket.io')(http);
 var planner = require('./planner');
 
 
+
 //making files in public served at /
 app.use(express.static('public'))
 
-app.get('/', function (req, res) {
-  var options = {
-    root: __dirname + '/public/',
-    dotfiles: 'deny',
-    headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-    }
-  };
-  res.sendFile("index.html", options, function (err) {
-   if (err) {
-     next(err);
-   } else {
-     console.log('Sent:', "index.html");
-   }
- });
-})
-
 //Client to server
-app.listen(3000, function () {
+http.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 });
 
 //Serve html
 app.get('/', function(req, res){
- 	res.render('index.html', {});
+ 	res.serveFile('index.html');
 });
 
 
