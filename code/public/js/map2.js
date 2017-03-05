@@ -7,32 +7,13 @@ socket.on('sendAllPos',function(allPos){
      medAid = allPos[0];
      injured = allPos[1];
      initMap();
-     var pinColorYou = "077CF2";
-     var pinColorMed = "01D516";
-     for (var i in medAid) {
-       var marker = new google.maps.Marker({
-         position: new google.maps.LatLng(medAid[i].latitude, medAid[i].longitude),
-         map: map
-       });
-     }
-     /*for (var i in injured) {
-       marker = new google.maps.Marker({
-         position: new google.maps.LatLng(injured[i].latitude, injured[i].longitude),
-         map: map
-       });
-     }*/
-     google.maps.event.addListener(marker, 'click', (function(marker, i) {
-       return function() {
-         infowindow.setContent(medAid[i][0]);
-         infowindow.open(map, marker);
-       }
-     })(marker, i));
+
 });
 
 function initMap() {
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -34.397, lng: 150.644},
-        zoom: 13
+        zoom: 12
       });
       var marker = new google.maps.Marker({
         position: {lat: -34.397, lng: 150.644},
@@ -56,6 +37,28 @@ function initMap() {
         // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter());
       }
+
+      var pinColorYou = "077CF2";
+      var pinColorMed = "01D516";
+      for (var i in medAid) {
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(medAid[i].latitude, medAid[i].longitude),
+          map: map,
+          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+        });
+      }
+      for (var i in injured) {
+        marker = new google.maps.Marker({
+          position: new google.maps.LatLng(injured[i].latitude, injured[i].longitude),
+          map: map
+        });
+      }
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(medAid[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
