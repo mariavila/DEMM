@@ -63,10 +63,10 @@ io.on('connection', function(socket){
     //To BE DONE
   });
   socket.on('notAvailable', function(msg){
-    if(msg.userID in medicalAid) delete medicalAid[msg.userID];
-    if(socket.id in people) delete people[msg.userID];
+    if(socket.id in medicalAid) delete medicalAid[socket.id];
+    if(socket.id in people) delete people[socket.id];
     if(socket.id in injured){
-      delete medicalAid[msg.userID];
+      delete medicalAid[socket.id];
       injuredCOUNT--;
     }
   });
@@ -76,6 +76,11 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function(){
     delete people[socket.id];
+    if(socket.id in people) delete people[socket.id];
+    if(socket.id in injured){
+      delete medicalAid[socket.id];
+      injuredCOUNT--;
+    }
   });
 });
 
