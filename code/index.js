@@ -79,50 +79,38 @@ io.on('connection', function(socket){
     console.log([medicalAid, injured]);
   });
 
-  socket.on('disconnect', function(){
-    delete people[socket.id];
-    if(socket.id in injured){
-      delete medicalAid[socket.id];
-      injuredCOUNT--;
-    }
-  });
-});
+  socket.on('askWheretogo', function(){
+    if(injuredCOUNT>0){
+      injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
+      injured["_12346"] = {motionless: 0, latitude: 41.386895, longitude:  2.162351};
+      injured["_12347"] = {motionless: 0, latitude: 41.393833,  longitude: 2.197119};
 
+      medicalAid["_0987654"] = {latitude: 41.394605, longitude: 2.150028};
+      medicalAid["_0987653"] = {latitude: 41.405804,  longitude: 2.188877};
+      medicalAid["_0987652"] = {latitude: 41.410492,  longitude: 2.158905};
+      
+      var state ={"healers" : medicalAid,"injured": injured};
 
-
-function mainloop() {
-  if(injuredCOUNT>0){
-    injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
-    injured["_12346"] = {motionless: 0, latitude: 41.386895, longitude:  2.162351};
-    injured["_12347"] = {motionless: 0, latitude: 41.393833,  longitude: 2.197119};
-
-    medicalAid["_0987654"] = {latitude: 41.394605, longitude: 2.150028};
-    medicalAid["_0987653"] = {latitude: 41.405804,  longitude: 2.188877};
-    medicalAid["_0987652"] = {latitude: 41.410492,  longitude: 2.158905};
-    
-    var state ={"healers" : medicalAid,"injured": injured};
-
-    //Call calculate routes function
-    var routes = planner.solve(state);
-    //console.log(state);
-    //Send routes to clients
-    for(var socketId in routes){
-      console.log(socketId);
-      if(routes[socketId].next != undefined && socketId[0]!='_'){
-        var socket = people[socketId];
-        console.log(routes[socketId].next);
-        socket.emit('sendPerson', routes[socketId].next);
-        console.log("envio al marc les coses que ha calculat l'esteve")
-        console.log(routes[socketId].next);
+      //Call calculate routes function
+      var routes = planner.solve(state);
+      //console.log(state);
+      //Send routes to clients
+      for(var socketId in routes){
+        console.log(socketId);
+        if(routes[socketId].next != undefined && socketId[0]!='_'){
+          var socket = people[socketId];
+          console.log(routes[socketId].next);
+          socket.emit('sendPerson', routes[socketId].next);
+          console.log("envio al marc les coses que ha calculat l'esteve")
+          console.log(routes[socketId].next);
+        }
       }
     }
-  }
-}
+  });
+
   socket.on('disconnect', function(){
     delete people[socket.id];
     delete medicalAid[socket.id];
-    //FALTA fer:  injuredCOUNT--;
-    }
+    //falta fer: injuredCOUNT--;
   });
-
 });
