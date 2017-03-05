@@ -108,7 +108,7 @@ $(document).ready(function() {
   socket.on('sendPerson', function(msg){
       var latitudetogo = msg.latitude;
       var longitudetogo = msg.longitude;
-      mapsurl = "http://maps.google.com/?q=" + latitudetogo + "," + longitudetogo
+      var mapsurl = "http://maps.google.com/?q=" + latitudetogo + "," + longitudetogo;
       $(".waitMessage").hide("slow");
       $(".toMap").show("slow");
       document.getElementById("btnToMap").setAttribute("href",mapsurl);

@@ -44,13 +44,14 @@ function initMap() {
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(medAid[i].latitude, medAid[i].longitude),
           map: map,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+          icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|00FF00'
         });
       }
       for (var i in injured) {
         marker = new google.maps.Marker({
           position: new google.maps.LatLng(injured[i].latitude, injured[i].longitude),
-          map: map
+          map: map,
+          icon: 'https://chart.googleapis.com/chart?chst=d_map_pin_letter&chld=|FF0000'
         });
       }
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -69,9 +70,5 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 $(document).ready(function() {
-
-//Init map
-
-
 
 });
