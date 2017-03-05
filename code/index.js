@@ -111,9 +111,8 @@ io.on('connection', function(socket){
 
   socket.on('disconnect', function(){
     delete people[socket.id];
-    if(socket.id in injured){
-      delete medicalAid[socket.id];
-      injuredCOUNT--;
+    delete medicalAid[socket.id];
+    // Falta fer aixooooo:  injuredCOUNT--;
     }
   });
 
