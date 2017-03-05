@@ -2,6 +2,8 @@
 
 ## Client to server
 
+## IO
+
 ### newUser(danger, movement, latitude,longitude,[services])
 
 danger is an int from 0 to 10 which represents the danger
@@ -28,29 +30,25 @@ decision is an int, 0 representing that the person was unable to complete the jo
 ```
 {
 }
+```
 
 ### notAvailable(userID)
 userID is an int representing the user
+```
 {
 }
-
+```
+### requestAllPos()
+```
+{
+}
+```
 
 ## Server to client
 
 ### sendPerson(latitude, longitude)
 
 latitude and longitude is where the person has to go
-```
-{
-}
-```
-
-### sendTransport(latitude, longitude, latitudeFi, longitudeFi)
-
-latitude and longitude is where the person has to pick up a person
-
-latitudeFi and longitudeFi is the final destination
-
 ```
 {
 }
@@ -64,8 +62,10 @@ danger is an int form 0 to 10 which represents the danger
 {
 }
 ```
+### sendAllPos([medicalAid, injured])
+medicalAid is a dictionary where the key is the userID and the values are the latitude and the longitude
 
-### status()
+injured is a dictionary where the key is the userID and the values are the latitude, the longitude and motionless
 
 ```
 {
@@ -76,6 +76,7 @@ danger is an int form 0 to 10 which represents the danger
 
 userID is the identification of the user
 
+## Internal connection
 
 #solver
 state:

@@ -9,15 +9,7 @@ $(document).ready(function() {
 
 
 //Init map
-  function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 13
-        });
-        var marker = new google.maps.Marker({
-          position: {lat: -34.397, lng: 150.644},
-          map: map
-        });
+  function initGeo() {
 
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
@@ -26,26 +18,9 @@ $(document).ready(function() {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-
-            map.setCenter(pos);
-            marker.setPosition(pos)
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
+          })
         }
-      }
-
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
-
-    google.maps.event.addDomListener(window, 'load', initMap);
+      };
 
 
 //Hide and show divs
@@ -53,7 +28,7 @@ $(document).ready(function() {
 
   var socket = io();
 
-  initMap();
+  initGeo();
 
   user["latitude"] = pos["lat"];
   user["longitude"] = pos["lng"];
@@ -74,7 +49,6 @@ $(document).ready(function() {
     $(".waitMessage").show("slow");
     user["latitude"] = pos["lat"];
     user["longitude"] = pos["lng"];
-    alert(JSON.stringify(user));
     socket.emit('newUser',user);
     $("#btnStopJob").show("slow");
   });
@@ -134,7 +108,7 @@ $(document).ready(function() {
   socket.on('sendPerson', function(msg){
       var latitudetogo = msg.latitude;
       var longitudetogo = msg.longitude;
-      mapsurl = "http://maps.google.com/?q=" + latitudetogo + "," + longitudtogo
+      var mapsurl = "http://maps.google.com/?q=" + latitudetogo + "," + longitudetogo;
       $(".waitMessage").hide("slow");
       $(".toMap").show("slow");
       document.getElementById("btnToMap").setAttribute("href",mapsurl);
@@ -142,7 +116,6 @@ $(document).ready(function() {
 
   socket.on('sendID',function(id){
        myid = id;
-       alert(myid);
   });
 
 });
