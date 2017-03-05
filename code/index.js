@@ -60,10 +60,18 @@ io.on('connection', function(socket){
     }
   });
   socket.on('jobDone', function(){
-	//var index = players.indexOf(socket.id);
+    //To BE DONE
   });
   socket.on('notAvailable', function(msg){
     if(msg.userID in medicalAid) delete medicalAid[msg.userID];
+    if(socket.id in people) delete people[msg.userID];
+    if(socket.id in injured){
+      delete medicalAid[msg.userID];
+      injuredCOUNT--;
+    }
+  });
+  socket.on('requestAllPos', function(){
+    io.emit([medicalAid, injured]);
   });
 
   socket.on('disconnect', function(){
