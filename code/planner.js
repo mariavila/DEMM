@@ -1,5 +1,5 @@
-const MAX_DEPTH = 3;
-const MAX_WIDTH = 3;
+const MAX_DEPTH = 2;
+const MAX_WIDTH = 2;
 
 
 var locations = [];
@@ -184,7 +184,7 @@ var sample =
           "motionless" : false,
           "latitude": 13,
           "longitude" : 14
-        },       
+        },
          "i2" :
         {
           "motionless" : false,
