@@ -75,7 +75,7 @@ io.on('connection', function(socket){
   });
   socket.on('requestAllPos', function(){
     console.log("request all pos");
-    io.emit([medicalAid, injured]);
+    io.emit("sendAllPos",[medicalAid, injured]);
     console.log([medicalAid, injured]);
   });
 
@@ -92,7 +92,7 @@ io.on('connection', function(socket){
 
 
 function mainloop() {
-  if(injuredCOUNT>0){ 
+  if(injuredCOUNT>0){
     injured["_12345"] = {motionless: 0, latitude: 41.3918234, longitude: 2.1155787};
     injured["_12346"] = {motionless: 0, latitude: 41.386895, longitude:  2.162351};
     injured["_12347"] = {motionless: 0, latitude: 41.393833,  longitude: 2.197119};

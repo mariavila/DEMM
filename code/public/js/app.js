@@ -49,7 +49,6 @@ $(document).ready(function() {
     $(".waitMessage").show("slow");
     user["latitude"] = pos["lat"];
     user["longitude"] = pos["lng"];
-    alert(JSON.stringify(user));
     socket.emit('newUser',user);
     $("#btnStopJob").show("slow");
   });
@@ -117,7 +116,6 @@ $(document).ready(function() {
 
   socket.on('sendID',function(id){
        myid = id;
-       alert(myid);
   });
 
 });
